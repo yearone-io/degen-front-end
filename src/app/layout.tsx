@@ -1,17 +1,19 @@
-// app/layout.tsx
-"use client";
-
-import { ChakraProvider } from "@chakra-ui/react";
+// app/layout.tsx (server component)
 import { ReactNode } from "react";
-import theme from "./theme";
+import Providers from "./Providers"; // our client-only component
+
+export const metadata = {
+  title: "Degen Frontend",
+  description: "A Next.js 13 + Chakra UI application",
+};
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <body>
-        <ChakraProvider theme={theme}>
+    <html lang="en" suppressHydrationWarning>
+    <body suppressHydrationWarning>
+        <Providers>
           {children}
-        </ChakraProvider>
+        </Providers>
       </body>
     </html>
   );

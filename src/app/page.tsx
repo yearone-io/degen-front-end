@@ -15,7 +15,6 @@ import {
 import useSWR from "swr";
 import axios from "axios";
 import NextLink from "next/link";
-import { useEffect, useState } from "react";
 
 const fetcher = (url: string) => axios.get(url).then(res => res.data);
 
@@ -23,17 +22,14 @@ const fetcher = (url: string) => axios.get(url).then(res => res.data);
 const FEED_ENDPOINT = "https://degen-dispatch.deno.dev/token/1/recent-detailed";
 
 export default function HomePage() {
-  const { data, error } = useSWR(FEED_ENDPOINT, fetcher, { refreshInterval: 10000 });
-  const [tokens, setTokens] = useState<any[]>([]);
-
-  useEffect(() => {
-    if (data && Array.isArray(data)) {
-      setTokens(data);
-    }
-  }, [data]);
+  // Use SWR with fallbackData so that data is never undefined.
+  const { data: tokens, error } = useSWR(FEED_ENDPOINT, fetcher, {
+    refreshInterval: 10000,
+    revalidateOnMount: false, // Avoid immediate revalidation that might cause mismatch
+    fallbackData: [],         // Always start with an empty array
+  });
 
   if (error) return <Text color="red.500">Error loading tokens</Text>;
-  if (!data) return <Text>Loading tokens...</Text>;
 
   return (
     <Box p={4}>
@@ -41,10 +37,13 @@ export default function HomePage() {
       <Tabs variant="soft-rounded" colorScheme="teal">
         <TabList>
           <Tab>Current</Tab>
-          <Tab as={NextLink} href="/performance">Performance Tokens</Tab>
-          <Tab as={NextLink} href="/whales">Whales</Tab>
+          <Tab as={NextLink} href="/performance">
+            Performance Tokens
+          </Tab>
+          <Tab as={NextLink} href="/whales">
+            Whales
+          </Tab>
         </TabList>
-
         <TabPanels>
           <TabPanel>
             <VStack spacing={4} align="stretch">
@@ -68,7 +67,6 @@ export default function HomePage() {
               ))}
             </VStack>
           </TabPanel>
-
           <TabPanel>
             <Text>Coming soon!</Text>
           </TabPanel>
