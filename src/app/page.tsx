@@ -11,12 +11,16 @@ import {
   Text,
   VStack,
   Link as ChakraLink,
+  Button,
+  Spinner,
 } from "@chakra-ui/react";
 import useSWR from "swr";
 import axios from "axios";
 import NextLink from "next/link";
+import { useState } from "react";
+import SpinCarousel from "./SpinComponent";
 
-const fetcher = (url: string) => axios.get(url).then(res => res.data);
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 // Adjust the endpoint/chainId as needed
 const FEED_ENDPOINT = "https://degen-dispatch.deno.dev/token/1/recent-detailed";
@@ -29,7 +33,6 @@ export default function HomePage() {
     fallbackData: [],         // Always start with an empty array
   });
 
-  if (error) return <Text color="red.500">Error loading tokens</Text>;
 
   return (
     <Box p={4}>
@@ -43,12 +46,20 @@ export default function HomePage() {
           <Tab as={NextLink} href="/whales">
             Whales
           </Tab>
+          {/* New tab for the token roulette */}
+          <Tab>Token Roulette</Tab>
         </TabList>
         <TabPanels>
+          {/* 1) Current Tokens Tab */}
           <TabPanel>
             <VStack spacing={4} align="stretch">
-              {tokens.map((token) => (
-                <Box key={token.address} p={4} borderWidth="1px" borderRadius="md">
+              {tokens.map((token: any) => (
+                <Box
+                  key={token.address}
+                  p={4}
+                  borderWidth="1px"
+                  borderRadius="md"
+                >
                   <ChakraLink
                     href={`/token/${token.chainId}/${token.address}`}
                     target="_blank"
@@ -67,11 +78,22 @@ export default function HomePage() {
               ))}
             </VStack>
           </TabPanel>
+
+          {/* 2) Performance Tokens Tab */}
           <TabPanel>
             <Text>Coming soon!</Text>
           </TabPanel>
+
+          {/* 3) Whales Tab */}
           <TabPanel>
             <Text>Coming soon!</Text>
+          </TabPanel>
+
+          {/* 4) Token Roulette Tab */}
+          <TabPanel>
+          <TabPanel>
+  <SpinCarousel tokens={tokens} />
+</TabPanel>
           </TabPanel>
         </TabPanels>
       </Tabs>
