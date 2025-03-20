@@ -1,95 +1,102 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
 
-export default function Home() {
+import {
+  Box,
+  Heading,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+  VStack,
+  Link as ChakraLink,
+  Button,
+  Spinner,
+} from "@chakra-ui/react";
+import useSWR from "swr";
+import axios from "axios";
+import NextLink from "next/link";
+import { useState } from "react";
+import SpinCarousel from "./SpinComponent";
+
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+
+// Adjust the endpoint/chainId as needed
+const FEED_ENDPOINT = "https://degen-dispatch.deno.dev/token/1/recent-detailed";
+
+export default function HomePage() {
+  // Use SWR with fallbackData so that data is never undefined.
+  const { data: tokens, error } = useSWR(FEED_ENDPOINT, fetcher, {
+    refreshInterval: 10000,
+    revalidateOnMount: false, // Avoid immediate revalidation that might cause mismatch
+    fallbackData: [],         // Always start with an empty array
+  });
+
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <Box p={4}>
+      <Heading mb={4}>Degen Frontend</Heading>
+      <Tabs variant="soft-rounded" colorScheme="teal">
+        <TabList>
+          <Tab>Current</Tab>
+          <Tab as={NextLink} href="/performance">
+            Performance Tokens
+          </Tab>
+          <Tab as={NextLink} href="/whales">
+            Whales
+          </Tab>
+          {/* New tab for the token roulette */}
+          <Tab>Token Roulette</Tab>
+        </TabList>
+        <TabPanels>
+          {/* 1) Current Tokens Tab */}
+          <TabPanel>
+            <VStack spacing={4} align="stretch">
+              {tokens.map((token: any) => (
+                <Box
+                  key={token.address}
+                  p={4}
+                  borderWidth="1px"
+                  borderRadius="md"
+                >
+                  <ChakraLink
+                    href={`/token/${token.chainId}/${token.address}`}
+                    target="_blank"
+                    _hover={{ textDecoration: "underline" }}
+                  >
+                    <Heading size="md">
+                      {token.name} ({token.symbol})
+                    </Heading>
+                    <Text>Address: {token.address}</Text>
+                    <Text>Pair Address: {token.pairAddress}</Text>
+                    <Text>
+                      Social Links: {JSON.stringify(token.socialLinks)}
+                    </Text>
+                  </ChakraLink>
+                </Box>
+              ))}
+            </VStack>
+          </TabPanel>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          {/* 2) Performance Tokens Tab */}
+          <TabPanel>
+            <Text>Coming soon!</Text>
+          </TabPanel>
+
+          {/* 3) Whales Tab */}
+          <TabPanel>
+            <Text>Coming soon!</Text>
+          </TabPanel>
+
+          {/* 4) Token Roulette Tab */}
+          <TabPanel>
+          <TabPanel>
+  <SpinCarousel tokens={tokens} />
+</TabPanel>
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+    </Box>
   );
 }
