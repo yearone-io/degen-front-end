@@ -92,8 +92,8 @@ export default function HomePage() {
           {/* 4) Token Roulette Tab */}
           <TabPanel>
           <TabPanel>
-  <SpinCarousel tokens={tokens} />
-</TabPanel>
+            <SpinCarousel tokens={tokens} />
+          </TabPanel>
           </TabPanel>
         </TabPanels>
       </Tabs>
