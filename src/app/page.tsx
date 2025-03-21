@@ -102,13 +102,13 @@ export default function HomePage() {
                 </ListItem>
               </List>
               
-              <Button 
+              {/* <Button 
                 variant="alpha" 
                 size={{ base: "md", md: "lg" }}
                 width={{ base: "100%", sm: "auto" }}
               >
                 GET ALPHA
-              </Button>
+              </Button> */}
               
               <HStack spacing={4} flexWrap="wrap">
                 <Text>Find us on</Text>
