@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Button, Flex, Text, Spinner } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, Spinner, useColorModeValue } from "@chakra-ui/react";
 import { useState, useEffect, useRef } from "react";
 
 interface Token {
@@ -70,31 +70,40 @@ const SpinCarousel: React.FC<SpinCarouselProps> = ({ tokens }) => {
   };
 
   return (
-    <Box>
+    <Box bg="degen.secondary" p={6} borderRadius="lg" boxShadow="lg">
+      <Text fontSize="xl" fontWeight="bold" mb={6} textAlign="center">
+        Token Roulette
+      </Text>
       <Flex justifyContent="center" alignItems="center" gap={4} wrap="wrap">
         {visibleTokens.map((token, index) => (
           <Box
             key={token.address}
             p={4}
             borderWidth={index === 2 ? "3px" : "1px"}
-            borderColor={index === 2 ? "teal.500" : "gray.200"}
+            borderColor={index === 2 ? "degen.accent" : "whiteAlpha.300"}
             borderRadius="md"
             minW="100px"
             textAlign="center"
+            bg={index === 2 ? "rgba(255, 92, 0, 0.1)" : "transparent"}
           >
-            <Text fontWeight="bold">{token.symbol}</Text>
-            <Text fontSize="sm">{token.name}</Text>
+            <Text fontWeight="bold" color="white">{token.symbol}</Text>
+            <Text fontSize="sm" color="whiteAlpha.800">{token.name}</Text>
           </Box>
         ))}
       </Flex>
-      <Flex justifyContent="center" mt={4}>
-        <Button onClick={startSpin} disabled={isPlaying || totalTokens === 0}>
-          {isPlaying ? <Spinner size="sm" /> : "Play"}
+      <Flex justifyContent="center" mt={6}>
+        <Button
+          onClick={startSpin}
+          disabled={isPlaying || totalTokens === 0}
+          variant="alpha"
+          size="md"
+        >
+          {isPlaying ? <Spinner size="sm" /> : "Spin!"}
         </Button>
       </Flex>
       {selectedToken && (
-        <Box mt={4} textAlign="center">
-          <Text fontSize="lg" fontWeight="bold">
+        <Box mt={6} textAlign="center" p={4} bg="rgba(255, 255, 255, 0.1)" borderRadius="md">
+          <Text fontSize="lg" fontWeight="bold" color="degen.accent">
             Selected Token: {selectedToken.name} ({selectedToken.symbol})
           </Text>
         </Box>

@@ -16,7 +16,12 @@ import {
   Divider,
   UnorderedList,
   ListItem,
+  Container,
 } from "@chakra-ui/react";
+import Navbar from "@/components/Navbar";
+
+// Import Navbar (would actually need to create this file)
+
 
 interface EventItem {
   key: string[];
@@ -45,25 +50,40 @@ export default function TokenDetailsPage() {
   // Loading/error states
   if (isLoading) {
     return (
-      <Box p={4}>
-        <Spinner />
-        <Text>Loading token data...</Text>
+      <Box bg="degen.primary" minH="100vh">
+        <Navbar />
+        <Container maxW="container.xl" py={10}>
+          <Box display="flex" justifyContent="center" alignItems="center" height="300px">
+            <Spinner color="degen.accent" size="xl" />
+            <Text color="white" ml={4}>Loading token data...</Text>
+          </Box>
+        </Container>
       </Box>
     );
   }
 
   if (error) {
     return (
-      <Box p={4}>
-        <Text color="red.500">Error loading token data</Text>
+      <Box bg="degen.primary" minH="100vh">
+        <Navbar />
+        <Container maxW="container.xl" py={10}>
+          <Box p={8} bg="red.500" color="white" borderRadius="md">
+            <Text fontSize="lg">Error loading token data</Text>
+          </Box>
+        </Container>
       </Box>
     );
   }
 
   if (!data || !Array.isArray(data)) {
     return (
-      <Box p={4}>
-        <Text>No data found for this token.</Text>
+      <Box bg="degen.primary" minH="100vh">
+        <Navbar />
+        <Container maxW="container.xl" py={10}>
+          <Box p={8} bg="degen.secondary" borderRadius="md">
+            <Text color="white">No data found for this token.</Text>
+          </Box>
+        </Container>
       </Box>
     );
   }
@@ -150,169 +170,192 @@ export default function TokenDetailsPage() {
   }
 
   return (
-    <Box p={4}>
-      {/* Heading area */}
-      <Heading size="lg" mb={2}>
-        {tokenName} {tokenSymbol ? `($${tokenSymbol})` : ""} on {chainName}
-      </Heading>
-      <Text fontSize="sm" color="gray.500" mb={4}>
-        Address: {addressFromEvent}
-      </Text>
-
-      <VStack
-        align="stretch"
-        spacing={4}
-        divider={<StackDivider borderColor="gray.200" />}
-      >
-        {/* Quick Stats (Risk/Tax & ETH Value) */}
-        <Box>
-          <Heading size="md" mb={2}>
-            Quick Stats
+    <Box bg="degen.primary" minH="100vh">
+      <Navbar />
+      
+      <Container maxW="container.xl" py={10}>
+        {/* Heading area */}
+        <Box bg="degen.secondary" p={6} borderRadius="lg" mb={6}>
+          <Heading size="lg" mb={2} color="white">
+            {tokenName} {tokenSymbol ? `($${tokenSymbol})` : ""} on {chainName}
           </Heading>
-          <HStack spacing={3} wrap="wrap">
-            <Badge colorScheme="red" variant="outline">
-              Risk: {riskLevel}
-            </Badge>
-            <Badge colorScheme="green" variant="outline">
-              Buy Tax: {buyTax}%
-            </Badge>
-            <Badge colorScheme="green" variant="outline">
-              Sell Tax: {sellTax}%
-            </Badge>
-            {typeof totalPoolValueInETH === "number" && (
-              <Badge colorScheme="blue" variant="outline">
-                ETH Value: {totalPoolValueInETH.toFixed(8)}
-              </Badge>
-            )}
-          </HStack>
+          <Text fontSize="sm" color="whiteAlpha.700">
+            Address: {addressFromEvent}
+          </Text>
         </Box>
 
-        {/* Pool Health (if we have liquidityLocked info) */}
-        {liquidityLocked && (
-          <Box>
-            <Heading size="md" mb={2}>
-              Pool Health
+        <VStack
+          align="stretch"
+          spacing={6}
+          divider={<StackDivider borderColor="whiteAlpha.200" />}
+        >
+          {/* Quick Stats (Risk/Tax & ETH Value) */}
+          <Box bg="degen.secondary" p={6} borderRadius="lg">
+            <Heading size="md" mb={4} color="white">
+              Quick Stats
             </Heading>
-            {typeof totalPoolValueInETH === "number" && (
-              <Text>ETH Value: {totalPoolValueInETH.toFixed(8)}</Text>
-            )}
-            <Text>
-              LP 🔥: {burnLPPercent.toFixed(2)}% | LP 🔒:{" "}
-              {lockLPPercent.toFixed(2)}% | LP ???: {otherLPPercent.toFixed(2)}%
-            </Text>
-            {liquidityPoolTokenHolders.length > 0 && (
-              <Box mt={2}>
-                <Text fontWeight="bold">LP Holders:</Text>
-                <UnorderedList>
-                  {liquidityPoolTokenHolders.map((holder: any) => (
-                    <ListItem key={holder.address}>
-                      <Text>
-                        {holder.address.slice(0, 6)}...
-                        {holder.address.slice(-4)} | Type: {holder.type} |{" "}
-                        {holder.percentage ?? 0}%
-                        {holder.alias ? ` (${holder.alias})` : ""}
-                      </Text>
-                    </ListItem>
-                  ))}
-                </UnorderedList>
-              </Box>
-            )}
-          </Box>
-        )}
-
-        {/* Social Links (if any) */}
-        {Object.keys(socialLinks).length > 0 && (
-          <Box>
-            <Heading size="md" mb={2}>
-              Social Links
-            </Heading>
-            {Object.entries(socialLinks).map(([key, value]) => {
-              if (Array.isArray(value)) {
-                return value.map((url: string) => (
-                  <Text key={url}>
-                    <ChakraLink
-                      href={url}
-                      color="teal.500"
-                      isExternal
-                      textDecoration="underline"
-                    >
-                      {key}: {url}
-                    </ChakraLink>
-                  </Text>
-                ));
-              } else {
-                return (
-                  <Text key={key}>
-                    {key}: {JSON.stringify(value)}
-                  </Text>
-                );
-              }
-            })}
-          </Box>
-        )}
-
-        {/* Unique Words & Template Match (if contractVerified) */}
-        {contractVerified &&
-          (uniqueWords.length > 0 || templateMatch) && (
-            <Box>
-              <Heading size="md" mb={2}>
-                Contract Verification
-              </Heading>
-              {uniqueWords.length > 0 && (
-                <Text>
-                  <strong>Unique Words:</strong> {uniqueWords.join(", ")}
-                </Text>
+            <HStack spacing={3} wrap="wrap">
+              <Badge colorScheme="red" variant="solid" px={3} py={1}>
+                Risk: {riskLevel}
+              </Badge>
+              <Badge colorScheme="green" variant="solid" px={3} py={1}>
+                Buy Tax: {buyTax}%
+              </Badge>
+              <Badge colorScheme="green" variant="solid" px={3} py={1}>
+                Sell Tax: {sellTax}%
+              </Badge>
+              {typeof totalPoolValueInETH === "number" && (
+                <Badge colorScheme="blue" variant="solid" px={3} py={1}>
+                  ETH Value: {totalPoolValueInETH.toFixed(8)}
+                </Badge>
               )}
-              {templateMatch && (
-                <Box mt={2}>
-                  <Text fontWeight="bold">Template Match (First)</Text>
-                  <Text>Name: {templateMatch.first?.name}</Text>
-                  <Text>Score: {templateMatch.first?.score}</Text>
-                  {Array.isArray(templateMatch.first?.uniqueWords) && (
-                    <Text>
-                      Unique Words:{" "}
-                      {templateMatch.first.uniqueWords.join(", ")}
-                    </Text>
-                  )}
-                  <Divider my={2} />
-                  <Text fontWeight="bold">Template Match (Second)</Text>
-                  <Text>Name: {templateMatch.second?.name}</Text>
-                  <Text>Score: {templateMatch.second?.score}</Text>
-                  {Array.isArray(templateMatch.second?.uniqueWords) && (
-                    <Text>
-                      Unique Words:{" "}
-                      {templateMatch.second.uniqueWords.join(", ")}
-                    </Text>
-                  )}
+            </HStack>
+          </Box>
+
+          {/* Pool Health (if we have liquidityLocked info) */}
+          {liquidityLocked && (
+            <Box bg="degen.secondary" p={6} borderRadius="lg">
+              <Heading size="md" mb={4} color="white">
+                Pool Health
+              </Heading>
+              {typeof totalPoolValueInETH === "number" && (
+                <Text color="whiteAlpha.900">ETH Value: {totalPoolValueInETH.toFixed(8)}</Text>
+              )}
+              <Text color="whiteAlpha.900">
+                LP 🔥: {burnLPPercent.toFixed(2)}% | LP 🔒:{" "}
+                {lockLPPercent.toFixed(2)}% | LP ???: {otherLPPercent.toFixed(2)}%
+              </Text>
+              {liquidityPoolTokenHolders.length > 0 && (
+                <Box mt={4} bg="whiteAlpha.100" p={4} borderRadius="md">
+                  <Text fontWeight="bold" color="white">LP Holders:</Text>
+                  <UnorderedList color="whiteAlpha.900">
+                    {liquidityPoolTokenHolders.map((holder: any) => (
+                      <ListItem key={holder.address}>
+                        <Text>
+                          {holder.address.slice(0, 6)}...
+                          {holder.address.slice(-4)} | Type: {holder.type} |{" "}
+                          {holder.percentage ?? 0}%
+                          {holder.alias ? ` (${holder.alias})` : ""}
+                        </Text>
+                      </ListItem>
+                    ))}
+                  </UnorderedList>
                 </Box>
               )}
             </Box>
           )}
 
-        {/* Liquidity & Holders */}
-        <Box>
-          <Heading size="md" mb={2}>
-            Liquidity & Holders
-          </Heading>
-          {numberOfHolders && (
-            <Text>Number of Holders: {numberOfHolders}</Text>
+          {/* Social Links (if any) */}
+          {Object.keys(socialLinks).length > 0 && (
+            <Box bg="degen.secondary" p={6} borderRadius="lg">
+              <Heading size="md" mb={4} color="white">
+                Social Links
+              </Heading>
+              {Object.entries(socialLinks).map(([key, value]) => {
+                if (Array.isArray(value)) {
+                  return value.map((url: string) => (
+                    <Text key={url} color="whiteAlpha.900">
+                      <ChakraLink
+                        href={url}
+                        color="degen.accent"
+                        isExternal
+                        textDecoration="underline"
+                      >
+                        {key}: {url}
+                      </ChakraLink>
+                    </Text>
+                  ));
+                } else {
+                  return (
+                    <Text key={key} color="whiteAlpha.900">
+                      {key}: {JSON.stringify(value)}
+                    </Text>
+                  );
+                }
+              })}
+            </Box>
           )}
-          {totalSupply && <Text>Total Supply: {totalSupply}</Text>}
-        </Box>
 
-        {/* Whale Stats (if available) */}
-        {whaleStats && (
-          <Box>
-            <Heading size="md" mb={2}>
-              Whale Stats
+          {/* Unique Words & Template Match (if contractVerified) */}
+          {contractVerified &&
+            (uniqueWords.length > 0 || templateMatch) && (
+              <Box bg="degen.secondary" p={6} borderRadius="lg">
+                <Heading size="md" mb={4} color="white">
+                  Contract Verification
+                </Heading>
+                {uniqueWords.length > 0 && (
+                  <Text color="whiteAlpha.900">
+                    Unique words: {uniqueWords.join(", ")}
+                  </Text>
+                )}
+                {templateMatch && (
+                  <Text color="whiteAlpha.900" mt={2}>
+                    Template match: {templateMatch.name} ({templateMatch.percentage}% match)
+                  </Text>
+                )}
+              </Box>
+            )}
+
+          {/* Token Info (totalSupply & holders) */}
+          <Box bg="degen.secondary" p={6} borderRadius="lg">
+            <Heading size="md" mb={4} color="white">
+              Token Info
             </Heading>
-            <Text>
-              Number of whale holders:{" "}
-              {whaleStats.payload.whaleHoldersCount}
-            </Text>
+            {totalSupply && (
+              <Text color="whiteAlpha.900">
+                Total Supply: {totalSupply}
+              </Text>
+            )}
+            {numberOfHolders && (
+              <Text color="whiteAlpha.900">
+                Number of Holders: {numberOfHolders}
+              </Text>
+            )}
           </Box>
-        )}
-      </VStack>
+
+          {/* Whale Stats (if available) */}
+          {whaleStats && whaleStats.payload && (
+            <Box bg="degen.secondary" p={6} borderRadius="lg">
+              <Heading size="md" mb={4} color="white">
+                Whale Analytics
+              </Heading>
+              <Text color="whiteAlpha.900">
+                Top 10 holders control: {whaleStats.payload.top10Percentage ?? "Unknown"}% of supply
+              </Text>
+              {whaleStats.payload.whales && (
+                <Box mt={4} bg="whiteAlpha.100" p={4} borderRadius="md">
+                  <Text fontWeight="bold" color="white">Top Whales:</Text>
+                  <UnorderedList color="whiteAlpha.900">
+                    {whaleStats.payload.whales.slice(0, 5).map((whale: any, index: number) => (
+                      <ListItem key={index}>
+                        <Text>
+                          {whale.address.slice(0, 6)}...{whale.address.slice(-4)} | 
+                          {whale.percentage}% of supply
+                          {whale.alias ? ` (${whale.alias})` : ""}
+                        </Text>
+                      </ListItem>
+                    ))}
+                  </UnorderedList>
+                </Box>
+              )}
+            </Box>
+          )}
+
+          {/* Raw Event Data (for debugging or advanced users) */}
+          <Box bg="degen.secondary" p={6} borderRadius="lg">
+            <Heading size="md" mb={4} color="white">
+              Available Events
+            </Heading>
+            <HStack spacing={3} wrap="wrap">
+              {Object.keys(eventsByType).map(eventType => (
+                <Badge key={eventType} colorScheme="purple" variant="outline" px={3} py={1}>
+                  {eventType}
+                </Badge>
+              ))}
+            </HStack>
+          </Box>
+        </VStack>
+      </Container>
     </Box>
   );
 }
