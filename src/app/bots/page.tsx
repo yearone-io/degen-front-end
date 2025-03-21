@@ -12,8 +12,10 @@ import {
   VStack, 
   HStack, 
   Icon,
+  Button,
+  Flex,
 } from "@chakra-ui/react";
-import { FaExternalLinkAlt, FaTelegram } from 'react-icons/fa';
+import { FaExternalLinkAlt, FaTelegram, FaBook } from 'react-icons/fa';
 import Navbar from "@/components/Navbar";
 
 export default function BotsPage() {
@@ -58,22 +60,50 @@ export default function BotsPage() {
                   Track market movers and whale transactions in real-time. Get instant notifications when big players make significant moves in the market.
                 </Text>
                 
-                <HStack 
-                  bg="degen.accent" 
-                  color="white" 
-                  p={3} 
-                  borderRadius="md" 
-                  alignSelf="flex-end"
-                  _hover={{ bg: 'orange.600' }}
+                <Flex 
+                  width="100%" 
+                  justifyContent="flex-end" 
+                  gap={3} 
+                  mt={2}
                 >
-                  <LinkOverlay 
-                    href="https://t.me/DegenDispatchBot?start=source_website" 
-                    isExternal
+                  <Button
+                    as="a"
+                    href="https://docs.degendispatch.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    leftIcon={<FaBook />}
+                    bg="degen.secondary"
+                    color="white"
+                    borderWidth="1px"
+                    borderColor="degen.accent"
+                    _hover={{ 
+                      bg: "degen.primary",
+                      transform: "translateY(-2px)",
+                      shadow: "md"
+                    }}
+                    size="md"
+                  >
+                    Documentation
+                  </Button>
+                  
+                  <Button
+                    as="a"
+                    href="https://t.me/DegenDispatchBot?start=source_website"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    rightIcon={<FaExternalLinkAlt />}
+                    bg="degen.accent"
+                    color="white"
+                    _hover={{ 
+                      bg: "orange.600",
+                      transform: "translateY(-2px)",
+                      shadow: "md"
+                    }}
+                    size="md"
                   >
                     Connect to Bot
-                  </LinkOverlay>
-                  <Icon as={FaExternalLinkAlt} ml={2} />
-                </HStack>
+                  </Button>
+                </Flex>
               </VStack>
             </LinkBox>
 
@@ -104,22 +134,29 @@ export default function BotsPage() {
                   Join our Chad Takeovers (CTOs) channel to get instant notifications about new token launches and market opportunities before they go mainstream.
                 </Text>
                 
-                <HStack 
-                  bg="degen.accent" 
-                  color="white" 
-                  p={3} 
-                  borderRadius="md" 
-                  alignSelf="flex-end"
-                  _hover={{ bg: 'orange.600' }}
+                <Flex 
+                  width="100%" 
+                  justifyContent="flex-end" 
+                  mt={2}
                 >
-                  <LinkOverlay 
-                    href="https://t.me/ChadTakeoversCTOs" 
-                    isExternal
+                  <Button
+                    as="a"
+                    href="https://t.me/ChadTakeoversCTOs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    rightIcon={<FaExternalLinkAlt />}
+                    bg="degen.accent"
+                    color="white"
+                    _hover={{ 
+                      bg: "orange.600",
+                      transform: "translateY(-2px)",
+                      shadow: "md"
+                    }}
+                    size="md"
                   >
                     Join Channel
-                  </LinkOverlay>
-                  <Icon as={FaExternalLinkAlt} ml={2} />
-                </HStack>
+                  </Button>
+                </Flex>
               </VStack>
             </LinkBox>
           </SimpleGrid>
