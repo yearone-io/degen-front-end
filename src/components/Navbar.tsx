@@ -29,6 +29,7 @@ const Navbar = () => {
     { name: "Performance Picks", path: "/deals" },
     { name: "Whale Tracking", path: "/whales" },
     { name: "Roulette", path: "/roulette" },
+    { name: "CTOs", path: "/ctos" }, // Added the new CTOs page link
     { name: "Telegram Bots", path: "/bots" },
   ];
 
@@ -90,11 +91,6 @@ const Navbar = () => {
                 {item.name}
               </MenuItem>
             ))}
-            {/* <MenuItem as="div">
-              <Button variant="alpha" size="sm" width="100%">
-                GET ALPHA
-              </Button>
-            </MenuItem> */}
           </MenuList>
         </Menu>
       ) : (
@@ -114,9 +110,6 @@ const Navbar = () => {
               {item.name}
             </Link>
           ))}
-          {/* <Button variant="alpha" size="sm">
-            GET ALPHA
-          </Button> */}
         </HStack>
       )}
     </Flex>

@@ -18,6 +18,7 @@ import {
   VStack,
   useBreakpointValue,
   Icon,
+  Image,
 } from "@chakra-ui/react";
 import useSWR from "swr";
 import axios from "axios";
@@ -138,20 +139,15 @@ export default function HomePage() {
           </GridItem>
           
           <GridItem display={{ base: "none", md: "block" }}>
-            {/* Placeholder for illustration/image */}
-            <Box 
-              width="100%" 
-              height="100%" 
-              display="flex" 
-              justifyContent="center"
-              alignItems="center"
-              bg="degen.secondary"
-              borderRadius="lg"
-              p={8}
-            >
-              <Text color="whiteAlpha.700" fontSize="xl">Degen Dispatch Logo/Illustration</Text>
-            </Box>
+            <Image 
+              src="/hero-image.png" 
+              alt="Degen Dispatch"
+              width="100%"
+              height="100%"
+              objectFit="cover"
+            />
           </GridItem>
+
         </Grid>
         
         {/* Recent Tokens Preview */}
