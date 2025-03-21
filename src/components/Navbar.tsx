@@ -6,11 +6,38 @@ import {
   Text, 
   Button, 
   Link, 
-  HStack, 
+  HStack,
+  Box,
+  useBreakpointValue,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { HamburgerIcon } from "@chakra-ui/icons";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
+  const pathname = usePathname();
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
+  const navItems = [
+    { name: "Home", path: "/" },
+    { name: "New Tokens", path: "/newTokens" },
+    { name: "Deals", path: "/deals" },
+    { name: "Whales", path: "/whales" },
+    { name: "Roulette", path: "/roulette" },
+    { name: "Bots", path: "/bots" },
+  ];
+
+  const isActive = (path: string) => {
+    if (path === "/" && pathname === "/") return true;
+    if (path !== "/" && pathname.startsWith(path)) return true;
+    return false;
+  };
+
   return (
     <Flex
       as="nav"
@@ -38,22 +65,60 @@ const Navbar = () => {
             </Text>
           </HStack>
         </NextLink>
-        <Text ml={4} color="whiteAlpha.800" fontSize="sm">
+        <Text ml={4} color="whiteAlpha.800" fontSize="sm" display={{ base: "none", md: "block" }}>
           Real-Time Crypto Whale Tracker
         </Text>
       </Flex>
 
-      <HStack
-        spacing={4}
-        display={{ base: "none", md: "flex" }}
-      >
-        <Link as={NextLink} href="/documentation" color="whiteAlpha.900">
-          Documentation
-        </Link>
-        <Button variant="alpha" size="sm">
-          GET ALPHA
-        </Button>
-      </HStack>
+      {isMobile ? (
+        <Menu>
+          <MenuButton 
+            as={IconButton} 
+            icon={<HamburgerIcon />} 
+            variant="outline" 
+            aria-label="Navigation Menu"
+          />
+          <MenuList bg="degen.secondary">
+            {navItems.map((item) => (
+              <MenuItem 
+                key={item.path}
+                as={NextLink} 
+                href={item.path}
+                bg={isActive(item.path) ? "degen.accent" : "transparent"}
+                _hover={{ bg: "degen.accent" }}
+              >
+                {item.name}
+              </MenuItem>
+            ))}
+            <MenuItem as="div">
+              <Button variant="alpha" size="sm" width="100%">
+                GET ALPHA
+              </Button>
+            </MenuItem>
+          </MenuList>
+        </Menu>
+      ) : (
+        <HStack spacing={6}>
+          {navItems.map((item) => (
+            <Link 
+              key={item.path}
+              as={NextLink} 
+              href={item.path} 
+              color="whiteAlpha.900"
+              fontWeight={isActive(item.path) ? "bold" : "normal"}
+              borderBottom={isActive(item.path) ? "2px" : "0"}
+              borderColor="degen.accent"
+              pb={1}
+              _hover={{ textDecoration: "none", color: "degen.accent" }}
+            >
+              {item.name}
+            </Link>
+          ))}
+          <Button variant="alpha" size="sm">
+            GET ALPHA
+          </Button>
+        </HStack>
+      )}
     </Flex>
   );
 };

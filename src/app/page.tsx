@@ -1,55 +1,35 @@
+// src/app/page.tsx
 "use client";
 
 import {
   Box,
   Heading,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
   Text,
-  VStack,
-  Link as ChakraLink,
   Button,
   Spinner,
-  Flex,
   Container,
   Grid,
   GridItem,
   HStack,
   List,
   ListItem,
-  ListIcon,
-  Image,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
+  Link as ChakraLink,
+  Flex,
+  VStack,
 } from "@chakra-ui/react";
 import useSWR from "swr";
 import axios from "axios";
 import NextLink from "next/link";
-import { useState } from "react";
-import SpinCarousel from "./SpinComponent";
 import { CheckCircleIcon } from "@chakra-ui/icons";
-
-// Import Navbar (would actually need to create this file)
 import Navbar from "../components/Navbar";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
-
-// Adjust the endpoint/chainId as needed
 const FEED_ENDPOINT = "https://degen-dispatch.deno.dev/token/1/recent-detailed";
 
 export default function HomePage() {
-  // Use SWR with fallbackData so that data is never undefined.
-  const { data: tokens, error } = useSWR(FEED_ENDPOINT, fetcher, {
+  const { data: tokens, error, isLoading } = useSWR(FEED_ENDPOINT, fetcher, {
     refreshInterval: 10000,
-    revalidateOnMount: false, // Avoid immediate revalidation that might cause mismatch
-    fallbackData: [],         // Always start with an empty array
+    fallbackData: [],
   });
 
   return (
@@ -117,7 +97,7 @@ export default function HomePage() {
           </GridItem>
           
           <GridItem>
-            {/* Placeholder for the illustration/image from the screenshot */}
+            {/* Placeholder for illustration/image */}
             <Box 
               width="100%" 
               height="100%" 
@@ -125,66 +105,126 @@ export default function HomePage() {
               justifyContent="center"
               alignItems="center"
             >
-              {/* You would need to add the actual image here */}
               <Text color="whiteAlpha.700">Degen Dispatch Logo/Illustration</Text>
             </Box>
           </GridItem>
         </Grid>
         
-        {/* You can add the tabs section here if needed */}
-        <Box mt={10}>
-          <Tabs variant="soft-rounded" colorScheme="orange">
-            <TabList>
-              <Tab>Current</Tab>
-              <Tab as={NextLink} href="/performance">
-                Performance Tokens
-              </Tab>
-              <Tab as={NextLink} href="/whales">
-                Whales
-              </Tab>
-              <Tab>Token Roulette</Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel>
-                <VStack spacing={4} align="stretch">
-                  {tokens.map((token: any) => (
-                    <Box
-                      key={token.address}
-                      p={4}
-                      bg="degen.secondary"
-                      borderRadius="md"
-                      boxShadow="md"
-                    >
-                      <ChakraLink
-                        href={`/token/${token.chainId}/${token.address}`}
-                        target="_blank"
-                        _hover={{ textDecoration: "underline" }}
-                      >
-                        <Heading size="md" color="white">
-                          {token.name} ({token.symbol})
-                        </Heading>
-                        <Text color="whiteAlpha.800">Address: {token.address}</Text>
-                        <Text color="whiteAlpha.800">Pair Address: {token.pairAddress}</Text>
-                        <Text color="whiteAlpha.800">
-                          Social Links: {JSON.stringify(token.socialLinks)}
-                        </Text>
-                      </ChakraLink>
-                    </Box>
-                  ))}
-                </VStack>
-              </TabPanel>
-              <TabPanel>
-                <Text color="white">Coming soon!</Text>
-              </TabPanel>
-              <TabPanel>
-                <Text color="white">Coming soon!</Text>
-              </TabPanel>
-              <TabPanel>
-                <SpinCarousel tokens={tokens} />
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
+        {/* Recent Tokens Preview */}
+        <Box mt={12}>
+          <Flex justifyContent="space-between" alignItems="center" mb={4}>
+            <Heading as="h2" size="lg" color="white">
+              Recent Tokens
+            </Heading>
+            <Button 
+              as={NextLink} 
+              href="/new-tokens" 
+              variant="outline" 
+              colorScheme="orange" 
+              size="sm"
+            >
+              View All
+            </Button>
+          </Flex>
+          
+          {isLoading ? (
+            <Flex justifyContent="center" alignItems="center" height="200px">
+              <Spinner color="degen.accent" />
+              <Text color="white" ml={4}>Loading tokens...</Text>
+            </Flex>
+          ) : error ? (
+            <Box p={4} bg="red.500" color="white" borderRadius="md">
+              <Text>Error loading token data</Text>
+            </Box>
+          ) : (
+            <Grid 
+              templateColumns={{ base: "1fr", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }} 
+              gap={4}
+            >
+              {tokens.slice(0, 3).map((token: any) => (
+                <Box
+                  key={token.address}
+                  p={4}
+                  bg="degen.secondary"
+                  borderRadius="md"
+                  boxShadow="md"
+                  _hover={{ transform: "translateY(-2px)", transition: "transform 0.2s" }}
+                >
+                  <ChakraLink
+                    as={NextLink}
+                    href={`/token/${token.chainId}/${token.address}`}
+                    _hover={{ textDecoration: "none" }}
+                  >
+                    <Heading size="md" color="white">
+                      {token.name} ({token.symbol})
+                    </Heading>
+                    <Text color="whiteAlpha.800" noOfLines={1}>Address: {token.address}</Text>
+                  </ChakraLink>
+                </Box>
+              ))}
+            </Grid>
+          )}
         </Box>
+        
+        {/* Feature Highlights */}
+        <Grid 
+          templateColumns={{ base: "1fr", md: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }}
+          gap={6}
+          mt={12}
+        >
+          {[
+            { 
+              icon: "🎲", 
+              title: "Token Roulette", 
+              description: "Feeling lucky? Try our token roulette!",
+              link: "/roulette"
+            },
+            {
+              icon: "🐳",
+              title: "Whale Tracking",
+              description: "Follow the big players in the crypto world.",
+              link: "/whales"
+            },
+            {
+              icon: "🤖",
+              title: "Trading Bots",
+              description: "Automate your trading strategies.",
+              link: "/bots"
+            },
+            {
+              icon: "💰",
+              title: "Exclusive Deals",
+              description: "Get early access to promising projects.",
+              link: "/deals"
+            }
+          ].map((feature, index) => (
+            <Box 
+              key={index}
+              bg="degen.secondary"
+              p={5}
+              borderRadius="lg"
+              textAlign="center"
+              _hover={{ transform: "translateY(-2px)", transition: "transform 0.2s" }}
+            >
+              <Text fontSize="3xl" mb={2}>{feature.icon}</Text>
+              <Heading as="h3" size="md" color="white" mb={2}>
+                {feature.title}
+              </Heading>
+              <Text color="whiteAlpha.800" mb={4}>
+                {feature.description}
+              </Text>
+              <Button 
+                as={NextLink}
+                href={feature.link}
+                variant="outline" 
+                colorScheme="orange" 
+                size="sm"
+              >
+                Explore
+              </Button>
+            </Box>
+          ))}
+        </Grid>
       </Container>
     </Box>
   );
