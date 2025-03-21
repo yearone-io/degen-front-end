@@ -26,10 +26,10 @@ const Navbar = () => {
   const navItems = [
     { name: "Home", path: "/" },
     { name: "New Tokens", path: "/newTokens" },
-    { name: "Deals", path: "/deals" },
-    { name: "Whales", path: "/whales" },
+    { name: "Performance Picks", path: "/deals" },
+    { name: "Whale Tracking", path: "/whales" },
     { name: "Roulette", path: "/roulette" },
-    { name: "Bots", path: "/bots" },
+    { name: "Telegram Bots", path: "/bots" },
   ];
 
   const isActive = (path: string) => {
@@ -66,7 +66,7 @@ const Navbar = () => {
           </HStack>
         </NextLink>
         <Text ml={4} color="whiteAlpha.800" fontSize="sm" display={{ base: "none", md: "block" }}>
-          Real-Time Crypto Whale Tracker
+          Real-Time Token Analysis
         </Text>
       </Flex>
 
@@ -90,11 +90,11 @@ const Navbar = () => {
                 {item.name}
               </MenuItem>
             ))}
-            <MenuItem as="div">
+            {/* <MenuItem as="div">
               <Button variant="alpha" size="sm" width="100%">
                 GET ALPHA
               </Button>
-            </MenuItem>
+            </MenuItem> */}
           </MenuList>
         </Menu>
       ) : (
@@ -114,9 +114,9 @@ const Navbar = () => {
               {item.name}
             </Link>
           ))}
-          <Button variant="alpha" size="sm">
+          {/* <Button variant="alpha" size="sm">
             GET ALPHA
-          </Button>
+          </Button> */}
         </HStack>
       )}
     </Flex>

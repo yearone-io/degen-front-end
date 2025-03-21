@@ -16,6 +16,8 @@ import {
   Link as ChakraLink,
   Flex,
   VStack,
+  useBreakpointValue,
+  Icon,
 } from "@chakra-ui/react";
 import useSWR from "swr";
 import axios from "axios";
@@ -32,71 +34,110 @@ export default function HomePage() {
     fallbackData: [],
   });
 
+  const isMobile = useBreakpointValue({ base: true, md: false });
+  const isTablet = useBreakpointValue({ base: true, lg: false });
+
   return (
     <Box bg="degen.primary" minH="100vh">
       <Navbar />
       
-      <Container maxW="container.xl" py={10}>
-        <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={8}>
+      <Container maxW="container.xl" py={{ base: 6, md: 10 }}>
+        {/* Hero Section */}
+        <Grid templateColumns={{ base: "1fr", md: "1fr 1fr" }} gap={{ base: 6, md: 8 }}>
           <GridItem>
-            <VStack align="start" spacing={6}>
-              <Heading as="h1" size="2xl" color="white">
-                Degen Dispatch: Real-Time Crypto Whale Tracker Bot
+            <VStack align="start" spacing={{ base: 4, md: 6 }} px={{ base: 2, md: 0 }}>
+              <Heading 
+                as="h1" 
+                size={{ base: "xl", md: "2xl" }} 
+                color="white"
+                lineHeight="1.2"
+              >
+                Degen Dispatch: Your Edge in Crypto Discovery
               </Heading>
               
-              <Text fontSize="lg" color="whiteAlpha.800">
-                Subscribe to whale wallets and track their transactions in real-time with 
-                Degen Dispatch. Our Telegram bot provides instant alerts, spam filtration, 
-                and advanced token details.
+              <Text fontSize={{ base: "md", md: "lg" }} color="whiteAlpha.800">
+                Find high-potential tokens before anyone else with Degen Dispatch. Our platform offers curated new token discoveries, performance analysis, whale tracking, and automated alerts.
               </Text>
               
               <List spacing={3} width="100%">
-                <ListItem display="flex" alignItems="center">
-                  <CheckCircleIcon color="yellow.400" mr={2} />
-                  <Text fontWeight="bold" mr={2}>
-                    Realtime Alerts
-                  </Text>
-                  <Text color="whiteAlpha.800">- Track whale moves in real-time</Text>
+                <ListItem display="flex" alignItems={{ base: "flex-start", md: "center" }} flexDirection={{ base: "column", sm: "row" }}>
+                  <Flex minWidth={{ base: "100%", sm: "auto" }} mb={{ base: 1, sm: 0 }} alignItems="center">
+                    <CheckCircleIcon color="yellow.400" mr={2} />
+                    <Text fontWeight="bold" mr={2}>
+                      Token Discovery
+                    </Text>
+                  </Flex>
+                  <Text color="whiteAlpha.800">- Find filtered brand new tokens with potential</Text>
                 </ListItem>
                 
-                <ListItem display="flex" alignItems="center">
-                  <CheckCircleIcon color="yellow.400" mr={2} />
-                  <Text fontWeight="bold" mr={2}>
-                    Spam Filtration
-                  </Text>
-                  <Text color="whiteAlpha.800">- Proprietary smart tracking avoids spam transactions</Text>
+                <ListItem display="flex" alignItems={{ base: "flex-start", md: "center" }} flexDirection={{ base: "column", sm: "row" }}>
+                  <Flex minWidth={{ base: "100%", sm: "auto" }} mb={{ base: 1, sm: 0 }} alignItems="center">
+                    <CheckCircleIcon color="yellow.400" mr={2} />
+                    <Text fontWeight="bold" mr={2}>
+                      Performance Analysis
+                    </Text>
+                  </Flex>
+                  <Text color="whiteAlpha.800">- Curated tokens that pass our strict criteria</Text>
                 </ListItem>
                 
-                <ListItem display="flex" alignItems="center">
-                  <CheckCircleIcon color="yellow.400" mr={2} />
-                  <Text fontWeight="bold" mr={2}>
-                    Advanced Token Details
-                  </Text>
-                  <Text color="whiteAlpha.800">- Get contract analysis and social links</Text>
+                <ListItem display="flex" alignItems={{ base: "flex-start", md: "center" }} flexDirection={{ base: "column", sm: "row" }}>
+                  <Flex minWidth={{ base: "100%", sm: "auto" }} mb={{ base: 1, sm: 0 }} alignItems="center">
+                    <CheckCircleIcon color="yellow.400" mr={2} />
+                    <Text fontWeight="bold" mr={2}>
+                      Whale Tracking
+                    </Text>
+                  </Flex>
+                  <Text color="whiteAlpha.800">- Follow what successful traders are buying and selling</Text>
                 </ListItem>
                 
-                <ListItem display="flex" alignItems="center">
-                  <CheckCircleIcon color="yellow.400" mr={2} />
-                  <Text fontWeight="bold" mr={2}>
-                    Default Whale Alpha
-                  </Text>
-                  <Text color="whiteAlpha.800">- Get started with a curated alpha list</Text>
+                <ListItem display="flex" alignItems={{ base: "flex-start", md: "center" }} flexDirection={{ base: "column", sm: "row" }}>
+                  <Flex minWidth={{ base: "100%", sm: "auto" }} mb={{ base: 1, sm: 0 }} alignItems="center">
+                    <CheckCircleIcon color="yellow.400" mr={2} />
+                    <Text fontWeight="bold" mr={2}>
+                      Automated Alerts
+                    </Text>
+                  </Flex>
+                  <Text color="whiteAlpha.800">- Get notified via Telegram for new tokens and whale moves</Text>
                 </ListItem>
               </List>
               
-              <Button variant="alpha" size="lg">
+              <Button 
+                variant="alpha" 
+                size={{ base: "md", md: "lg" }}
+                width={{ base: "100%", sm: "auto" }}
+              >
                 GET ALPHA
               </Button>
               
-              <HStack spacing={4}>
+              <HStack spacing={4} flexWrap="wrap">
                 <Text>Find us on</Text>
-                <Box as="span">X</Box>
-                <Box as="span">Telegram</Box>
+                <Flex 
+                  alignItems="center" 
+                  bg="whiteAlpha.200" 
+                  px={3} 
+                  py={1} 
+                  borderRadius="full"
+                  _hover={{ bg: "whiteAlpha.300" }}
+                  cursor="pointer"
+                >
+                  <Box as="span">X</Box>
+                </Flex>
+                <Flex 
+                  alignItems="center" 
+                  bg="whiteAlpha.200" 
+                  px={3} 
+                  py={1} 
+                  borderRadius="full"
+                  _hover={{ bg: "whiteAlpha.300" }}
+                  cursor="pointer"
+                >
+                  <Box as="span">Telegram</Box>
+                </Flex>
               </HStack>
             </VStack>
           </GridItem>
           
-          <GridItem>
+          <GridItem display={{ base: "none", md: "block" }}>
             {/* Placeholder for illustration/image */}
             <Box 
               width="100%" 
@@ -104,16 +145,25 @@ export default function HomePage() {
               display="flex" 
               justifyContent="center"
               alignItems="center"
+              bg="degen.secondary"
+              borderRadius="lg"
+              p={8}
             >
-              <Text color="whiteAlpha.700">Degen Dispatch Logo/Illustration</Text>
+              <Text color="whiteAlpha.700" fontSize="xl">Degen Dispatch Logo/Illustration</Text>
             </Box>
           </GridItem>
         </Grid>
         
         {/* Recent Tokens Preview */}
-        <Box mt={12}>
-          <Flex justifyContent="space-between" alignItems="center" mb={4}>
-            <Heading as="h2" size="lg" color="white">
+        <Box mt={{ base: 8, md: 12 }} px={{ base: 2, md: 0 }}>
+          <Flex 
+            justifyContent="space-between" 
+            alignItems="center" 
+            mb={4}
+            flexDirection={{ base: "column", sm: "row" }}
+            gap={{ base: 2, sm: 0 }}
+          >
+            <Heading as="h2" size={{ base: "md", md: "lg" }} color="white">
               Recent Tokens
             </Heading>
             <Button 
@@ -122,6 +172,7 @@ export default function HomePage() {
               variant="outline" 
               colorScheme="orange" 
               size="sm"
+              width={{ base: "100%", sm: "auto" }}
             >
               View All
             </Button>
@@ -138,7 +189,11 @@ export default function HomePage() {
             </Box>
           ) : (
             <Grid 
-              templateColumns={{ base: "1fr", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }} 
+              templateColumns={{ 
+                base: "1fr", 
+                sm: "repeat(2, 1fr)", 
+                lg: "repeat(3, 1fr)" 
+              }} 
               gap={4}
             >
               {tokens.slice(0, 3).map((token: any) => (
@@ -155,10 +210,17 @@ export default function HomePage() {
                     href={`/token/${token.chainId}/${token.address}`}
                     _hover={{ textDecoration: "none" }}
                   >
-                    <Heading size="md" color="white">
+                    <Heading size="md" color="white" noOfLines={1}>
                       {token.name} ({token.symbol})
                     </Heading>
-                    <Text color="whiteAlpha.800" noOfLines={1}>Address: {token.address}</Text>
+                    <Text 
+                      color="whiteAlpha.800" 
+                      noOfLines={1}
+                      fontSize="sm"
+                      mt={1}
+                    >
+                      Address: {token.address.substring(0, 6)}...{token.address.substring(token.address.length - 4)}
+                    </Text>
                   </ChakraLink>
                 </Box>
               ))}
@@ -168,57 +230,70 @@ export default function HomePage() {
         
         {/* Feature Highlights */}
         <Grid 
-          templateColumns={{ base: "1fr", md: "repeat(2, 1fr)", lg: "repeat(4, 1fr)" }}
-          gap={6}
-          mt={12}
+          templateColumns={{ 
+            base: "1fr", 
+            sm: "repeat(2, 1fr)", 
+            lg: "repeat(4, 1fr)" 
+          }}
+          gap={{ base: 4, md: 6 }}
+          mt={{ base: 8, md: 12 }}
+          px={{ base: 2, md: 0 }}
         >
           {[
             { 
-              icon: "🎲", 
-              title: "Token Roulette", 
-              description: "Feeling lucky? Try our token roulette!",
-              link: "/roulette"
+              icon: "🔍", 
+              title: "New Token Discovery", 
+              description: "Find filtered brand new tokens with high potential.",
+              link: "/newTokens"
+            },
+            {
+              icon: "⭐",
+              title: "Performance Picks",
+              description: "Tokens that passed our strict analysis criteria.",
+              link: "/deals"
             },
             {
               icon: "🐳",
               title: "Whale Tracking",
-              description: "Follow the big players in the crypto world.",
+              description: "Follow successful traders' moves in real-time.",
               link: "/whales"
             },
             {
-              icon: "🤖",
-              title: "Trading Bots",
-              description: "Automate your trading strategies.",
-              link: "/bots"
-            },
-            {
-              icon: "💰",
-              title: "Exclusive Deals",
-              description: "Get early access to promising projects.",
-              link: "/deals"
+              icon: "🎲",
+              title: "Token Roulette",
+              description: "Try your luck when analysis isn't enough.",
+              link: "/roulette"
             }
           ].map((feature, index) => (
             <Box 
               key={index}
               bg="degen.secondary"
-              p={5}
+              p={{ base: 4, md: 5 }}
               borderRadius="lg"
               textAlign="center"
               _hover={{ transform: "translateY(-2px)", transition: "transform 0.2s" }}
+              height="100%"
+              display="flex"
+              flexDirection="column"
+              justifyContent="space-between"
             >
-              <Text fontSize="3xl" mb={2}>{feature.icon}</Text>
-              <Heading as="h3" size="md" color="white" mb={2}>
-                {feature.title}
-              </Heading>
-              <Text color="whiteAlpha.800" mb={4}>
-                {feature.description}
-              </Text>
+              <VStack spacing={2} mb={4}>
+                <Text fontSize={{ base: "2xl", md: "3xl" }} mb={1}>{feature.icon}</Text>
+                <Heading as="h3" size={{ base: "sm", md: "md" }} color="white">
+                  {feature.title}
+                </Heading>
+                <Text color="whiteAlpha.800" fontSize={{ base: "sm", md: "md" }}>
+                  {feature.description}
+                </Text>
+              </VStack>
               <Button 
                 as={NextLink}
                 href={feature.link}
                 variant="outline" 
                 colorScheme="orange" 
                 size="sm"
+                width="100%"
+                mt="auto"
               >
                 Explore
               </Button>

@@ -4,7 +4,7 @@ import Providers from "./Providers"; // our client-only component
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Degen Dispatch | Real-Time Crypto Whale Tracker",
+  title: "Degen Dispatch | Real-Time Token Analysis",
   description: "Track whale wallets and their transactions in real-time with Degen Dispatch",
 };
 
