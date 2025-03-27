@@ -1,4 +1,4 @@
-// src/app/new-tokens/page.tsx
+// src/app/newTokens/page.tsx
 "use client";
 
 import {
@@ -28,26 +28,6 @@ const FEED_ENDPOINT = "https://degen-dispatch.deno.dev/token/1/recent-detailed";
 const truncateAddress = (address: string) => {
   if (!address) return "";
   return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
-};
-
-// Map social links to their respective icons
-const getSocialIcon = (key: string) => {
-  if (!key) return null;
-  
-  if (key === "twitter") return FaTwitter;
-  if (key === "telegram") return FaTelegram;
-  if (key === "discord") return FaDiscord;
-  return FaGlobe; // Default fallback for other websites
-};
-
-// Get platform name for tooltip
-const getPlatformName = (key: string) => {
-  if (!key) return "";
-  
-  if (key === "twitter")  return "Twitter";
-  if (key === "telegram") return "Telegram";
-  if (key === "discord") return "Discord";
-  return "Website";
 };
 
 export default function NewTokensPage() {
@@ -140,28 +120,77 @@ export default function NewTokensPage() {
                 
                 {token.socialLinks && (
                   <HStack spacing={3} mt={2}>
-                    {Object.entries(token.socialLinks).map(([key, url]: [string, any]) => {
-                      if (!url) return null;
-                      const IconComponent = getSocialIcon(key);
-                      const platformName = getPlatformName(key);
-                      
-                      return (
-                        <Tooltip key={key} label={platformName} hasArrow placement="top">
-                          <Box 
-                            as="span" 
-                            onClick={(e) => {
-                              e.preventDefault();
-                              window.open(url, '_blank');
-                            }}
-                            color="degen.lightBlue"
-                            _hover={{ color: "degen.accent" }}
-                            transition="color 0.2s"
-                          >
-                            <Icon as={IconComponent} boxSize={5} />
-                          </Box>
-                        </Tooltip>
-                      );
-                    })}
+                    {/* X (Twitter) Links */}
+                    {token.socialLinks.twitter && token.socialLinks.twitter.map((url: string, index: number) => (
+                      <Tooltip key={`twitter-${index}`} label="X (Twitter)" hasArrow placement="top">
+                        <Box 
+                          as="span" 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            window.open(url, '_blank');
+                          }}
+                          color="degen.lightBlue"
+                          _hover={{ color: "degen.accent" }}
+                          transition="color 0.2s"
+                        >
+                          <Icon as={FaTwitter} boxSize={5} />
+                        </Box>
+                      </Tooltip>
+                    ))}
+
+                    {/* Telegram Links */}
+                    {token.socialLinks.telegram && token.socialLinks.telegram.map((url: string, index: number) => (
+                      <Tooltip key={`telegram-${index}`} label="Telegram" hasArrow placement="top">
+                        <Box 
+                          as="span" 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            window.open(url, '_blank');
+                          }}
+                          color="degen.lightBlue"
+                          _hover={{ color: "degen.accent" }}
+                          transition="color 0.2s"
+                        >
+                          <Icon as={FaTelegram} boxSize={5} />
+                        </Box>
+                      </Tooltip>
+                    ))}
+
+                    {/* Website Links */}
+                    {token.socialLinks.website && token.socialLinks.website.map((url: string, index: number) => (
+                      <Tooltip key={`website-${index}`} label="Website" hasArrow placement="top">
+                        <Box 
+                          as="span" 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            window.open(url, '_blank');
+                          }}
+                          color="degen.lightBlue"
+                          _hover={{ color: "degen.accent" }}
+                          transition="color 0.2s"
+                        >
+                          <Icon as={FaGlobe} boxSize={5} />
+                        </Box>
+                      </Tooltip>
+                    ))}
+
+                    {/* Discord Links */}
+                    {token.socialLinks.discord && token.socialLinks.discord.map((url: string, index: number) => (
+                      <Tooltip key={`discord-${index}`} label="Discord" hasArrow placement="top">
+                        <Box 
+                          as="span" 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            window.open(url, '_blank');
+                          }}
+                          color="degen.lightBlue"
+                          _hover={{ color: "degen.accent" }}
+                          transition="color 0.2s"
+                        >
+                          <Icon as={FaDiscord} boxSize={5} />
+                        </Box>
+                      </Tooltip>
+                    ))}
                   </HStack>
                 )}
               </ChakraLink>
