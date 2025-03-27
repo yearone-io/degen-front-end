@@ -20,9 +20,6 @@ import {
 } from "@chakra-ui/react";
 import Navbar from "@/components/Navbar";
 
-// Import Navbar (would actually need to create this file)
-
-
 interface EventItem {
   key: string[];
   value: any; // The payload for the event
@@ -113,6 +110,11 @@ export default function TokenDetailsPage() {
   const chainName =
     honeypotChecked?.payload?.honeypotResponse?.chain?.name ?? chainId;
 
+  // Dex Screener Chart URL generation
+  const getDexScreenerEmbedUrl = () => {
+    return `https://dexscreener.com/ethereum/${tokenAddress}?embed=1&loadChartSettings=0&trades=0&tabs=0&info=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=5`;
+  };
+
   // Social links from ContractVerified
   const socialLinks = contractVerified?.payload?.links ?? {};
 
@@ -189,6 +191,39 @@ export default function TokenDetailsPage() {
           spacing={6}
           divider={<StackDivider borderColor="whiteAlpha.200" />}
         >
+          {/* New: DexScreener Chart Section */}
+          <Box 
+            bg="degen.secondary" 
+            p={6} 
+            borderRadius="lg" 
+            position="relative" 
+            width="100%" 
+            paddingBottom={{base: "150%", md: "75%", lg: "50%"}}
+          >
+            <Heading size="md" mb={4} color="white">
+              Price Chart
+            </Heading>
+            <Box 
+              position="absolute" 
+              top="0" 
+              left="0" 
+              width="100%" 
+              height="100%" 
+              p={6}
+            >
+              <iframe 
+                src={getDexScreenerEmbedUrl()} 
+                title="DexScreener Token Chart"
+                style={{
+                  width: '100%', 
+                  height: '100%', 
+                  border: 'none', 
+                  borderRadius: '8px'
+                }}
+              />
+            </Box>
+          </Box>
+
           {/* Quick Stats (Risk/Tax & ETH Value) */}
           <Box bg="degen.secondary" p={6} borderRadius="lg">
             <Heading size="md" mb={4} color="white">
