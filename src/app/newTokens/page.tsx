@@ -19,7 +19,7 @@ import useSWR from "swr";
 import axios from "axios";
 import NextLink from "next/link";
 import Navbar from "@/components/Navbar";
-import { FaTwitter, FaTelegram, FaDiscord, FaGlobe, FaMedium, FaGithub } from "react-icons/fa";
+import { FaTwitter, FaTelegram, FaDiscord, FaGlobe } from "react-icons/fa";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 const FEED_ENDPOINT = "https://degen-dispatch.deno.dev/token/1/recent-detailed";

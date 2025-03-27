@@ -35,9 +35,6 @@ export default function HomePage() {
     fallbackData: [],
   });
 
-  const isMobile = useBreakpointValue({ base: true, md: false });
-  const isTablet = useBreakpointValue({ base: true, lg: false });
-
   return (
     <Box bg="degen.primary" minH="100vh">
       <Navbar />
@@ -114,25 +111,29 @@ export default function HomePage() {
                 <Text>Find us on</Text>
                 <Flex 
                   alignItems="center" 
-                  bg="whiteAlpha.200" 
+                  bg="whiteAlpha.800" 
                   px={3} 
                   py={1} 
                   borderRadius="full"
-                  _hover={{ bg: "whiteAlpha.300" }}
+                  _hover={{ bg: "whiteAlpha.900" }}
                   cursor="pointer"
                 >
-                  <Box as="span">X</Box>
+                <a href="https://x.com/YearOneIO" target="_blank" aria-label="Open link to Twitter" rel="noopener noreferrer">
+                  <Image src="./logo-black.png" alt="X" width='30px' _hover={{transform:  'scale(1.1)'}} />
+                </a>
                 </Flex>
                 <Flex 
                   alignItems="center" 
-                  bg="whiteAlpha.200" 
+                  bg="whiteAlpha.800" 
                   px={3} 
                   py={1} 
                   borderRadius="full"
-                  _hover={{ bg: "whiteAlpha.300" }}
+                  _hover={{ bg: "whiteAlpha.900" }}
                   cursor="pointer"
                 >
-                  <Box as="span">Telegram</Box>
+                                 <a href="https://yearone.io" target="_blank" aria-label="Open link" rel="noopener noreferrer">
+                  <Image src="./logo.jpg" alt="X" width='35px' _hover={{transform:  'scale(1.1)'}} borderRadius={'50px'} />
+                </a>
                 </Flex>
               </HStack>
             </VStack>
