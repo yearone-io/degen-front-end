@@ -50,7 +50,7 @@ export default function HomePage() {
                 color="white"
                 lineHeight="1.2"
               >
-                Degen Dispatch: Your Edge in Crypto Discovery
+                Degen Dispatch: Your Edge in AI Crypto Discovery
               </Heading>
               
               <Text fontSize={{ base: "md", md: "lg" }} color="whiteAlpha.800">
