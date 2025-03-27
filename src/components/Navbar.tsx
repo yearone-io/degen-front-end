@@ -25,11 +25,12 @@ const Navbar = () => {
 
   const navItems = [
     { name: "Home", path: "/" },
+    { name: "How It Works", path: "/how-it-works" }, // Added this line
     { name: "New Tokens", path: "/newTokens" },
     { name: "Performance Picks", path: "/deals" },
     { name: "Whale Tracking", path: "/whales" },
     { name: "Roulette", path: "/roulette" },
-    { name: "CTOs", path: "/ctos" }, // Added the new CTOs page link
+    { name: "CTOs", path: "/ctos" },
     { name: "Telegram Bots", path: "/bots" },
   ];
 

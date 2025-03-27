@@ -55,7 +55,6 @@ export default function NewTokensPage() {
     refreshInterval: 10000,
     fallbackData: [],
   });
-  debugger;
 
   if (isLoading) {
     return (
