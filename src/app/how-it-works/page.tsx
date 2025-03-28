@@ -12,6 +12,8 @@ import {
   Grid,
   GridItem,
   Divider,
+  List,
+  ListItem,
 } from "@chakra-ui/react";
 import { 
   FaSearch, 
@@ -164,14 +166,14 @@ export default function HowItWorksPage() {
                   </HStack>
                   <Text color="whiteAlpha.800">
                     Our AI models are trained to:
-                    <ul style={{ paddingLeft: '20px', marginTop: '10px' }}>
-                      <li>Detect suspicious contract patterns</li>
-                      <li>Analyze historical token performance</li>
-                      <li>Predict potential red flags</li>
-                      <li>Assess market sentiment</li>
-                      <li>Identify emerging token trends</li>
-                    </ul>
                   </Text>
+                  <List pl={4} mt={2} spacing={1} color="whiteAlpha.800">
+                    <ListItem>Detect suspicious contract patterns</ListItem>
+                    <ListItem>Analyze historical token performance</ListItem>
+                    <ListItem>Predict potential red flags</ListItem>
+                    <ListItem>Assess market sentiment</ListItem>
+                    <ListItem>Identify emerging token trends</ListItem>
+                  </List>
                 </VStack>
               </GridItem>
             </Grid>
