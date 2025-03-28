@@ -19,9 +19,10 @@ import {
   Icon,
   Flex,
   Image,
+  Tooltip,
 } from "@chakra-ui/react";
 import Navbar from "@/components/Navbar";
-import { FaEthereum } from "react-icons/fa";
+import { FaEthereum, FaTwitter, FaTelegram, FaDiscord, FaGlobe } from "react-icons/fa";
 
 interface EventItem {
   key: string[];
@@ -203,6 +204,74 @@ export default function TokenDetailsPage() {
               <Text fontSize="sm" color="whiteAlpha.700">
                 Address: {addressFromEvent}
               </Text>
+                        {/* Social Links (if any) */}
+          {Object.keys(socialLinks).length > 0 && (
+              <HStack spacing={3} mt={2}>
+                {/* X (Twitter) Links */}
+                {socialLinks.twitter && socialLinks.twitter.map((url: string, index: number) => (
+                  <Tooltip key={`twitter-${index}`} label="X (Twitter)" hasArrow placement="top">
+                    <Box 
+                      as="span" 
+                      onClick={() => window.open(url, '_blank')}
+                      color="degen.lightBlue"
+                      _hover={{ color: "degen.accent" }}
+                      transition="color 0.2s"
+                      cursor="pointer"
+                    >
+                      <Icon as={FaTwitter} boxSize={6} />
+                    </Box>
+                  </Tooltip>
+                ))}
+
+                {/* Telegram Links */}
+                {socialLinks.telegram && socialLinks.telegram.map((url: string, index: number) => (
+                  <Tooltip key={`telegram-${index}`} label="Telegram" hasArrow placement="top">
+                    <Box 
+                      as="span" 
+                      onClick={() => window.open(url, '_blank')}
+                      color="degen.lightBlue"
+                      _hover={{ color: "degen.accent" }}
+                      transition="color 0.2s"
+                      cursor="pointer"
+                    >
+                      <Icon as={FaTelegram} boxSize={6} />
+                    </Box>
+                  </Tooltip>
+                ))}
+
+                {/* Website Links */}
+                {socialLinks.website && socialLinks.website.map((url: string, index: number) => (
+                  <Tooltip key={`website-${index}`} label="Website" hasArrow placement="top">
+                    <Box 
+                      as="span" 
+                      onClick={() => window.open(url, '_blank')}
+                      color="degen.lightBlue"
+                      _hover={{ color: "degen.accent" }}
+                      transition="color 0.2s"
+                      cursor="pointer"
+                    >
+                      <Icon as={FaGlobe} boxSize={6} />
+                    </Box>
+                  </Tooltip>
+                ))}
+
+                {/* Discord Links */}
+                {socialLinks.discord && socialLinks.discord.map((url: string, index: number) => (
+                  <Tooltip key={`discord-${index}`} label="Discord" hasArrow placement="top">
+                    <Box 
+                      as="span" 
+                      onClick={() => window.open(url, '_blank')}
+                      color="degen.lightBlue"
+                      _hover={{ color: "degen.accent" }}
+                      transition="color 0.2s"
+                      cursor="pointer"
+                    >
+                      <Icon as={FaDiscord} boxSize={6} />
+                    </Box>
+                  </Tooltip>
+                ))}
+              </HStack>
+          )}
             </Box>
           </Flex>
         </Box>
@@ -245,6 +314,7 @@ export default function TokenDetailsPage() {
               />
             </Box>
           </Box>
+
 
           {/* Quick Stats (Risk/Tax & ETH Value) */}
           <Box bg="degen.secondary" p={6} borderRadius="lg">
@@ -302,36 +372,6 @@ export default function TokenDetailsPage() {
             </Box>
           )}
 
-          {/* Social Links (if any) */}
-          {Object.keys(socialLinks).length > 0 && (
-            <Box bg="degen.secondary" p={6} borderRadius="lg">
-              <Heading size="md" mb={4} color="white">
-                Social Links
-              </Heading>
-              {Object.entries(socialLinks).map(([key, value]) => {
-                if (Array.isArray(value)) {
-                  return value.map((url: string) => (
-                    <Text key={url} color="whiteAlpha.900">
-                      <ChakraLink
-                        href={url}
-                        color="degen.accent"
-                        isExternal
-                        textDecoration="underline"
-                      >
-                        {key}: {url}
-                      </ChakraLink>
-                    </Text>
-                  ));
-                } else {
-                  return (
-                    <Text key={key} color="whiteAlpha.900">
-                      {key}: {JSON.stringify(value)}
-                    </Text>
-                  );
-                }
-              })}
-            </Box>
-          )}
 
           {/* Unique Words & Template Match (if contractVerified) */}
           {contractVerified &&
