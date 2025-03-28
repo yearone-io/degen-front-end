@@ -298,10 +298,11 @@ export default function TokenDetailsPage() {
 
         {/* Desktop/Mobile Responsive Layout */}
         <Grid 
-          templateColumns={{ base: "1fr", md: "1fr 1fr" }} 
+          templateColumns={{ base: "1fr", md: "3fr 2fr" }} 
           gap={6}
+          mb={6}
         >
-          {/* Left Column: Chart */}
+          {/* Left Column: Chart (3/5 width) */}
           <GridItem>
             <Box 
               bg="degen.secondary" 
@@ -336,12 +337,11 @@ export default function TokenDetailsPage() {
             </Box>
           </GridItem>
 
-          {/* Right Column: Token Information */}
+          {/* Right Column: Quick Stats, Token Info, Contract Verification (2/5 width) */}
           <GridItem>
             <VStack
               align="stretch"
               spacing={6}
-              divider={<StackDivider borderColor="whiteAlpha.200" />}
             >
               {/* Quick Stats */}
               <Box bg="degen.secondary" p={6} borderRadius="lg">
@@ -366,38 +366,22 @@ export default function TokenDetailsPage() {
                 </HStack>
               </Box>
 
-              {/* Pool Health */}
-              {liquidityLocked && (
-                <Box bg="degen.secondary" p={6} borderRadius="lg">
-                  <Heading size="md" mb={4} color="white">
-                    Pool Health
-                  </Heading>
-                  {typeof totalPoolValueInETH === "number" && (
-                    <Text color="whiteAlpha.900">ETH Value: {totalPoolValueInETH.toFixed(8)}</Text>
-                  )}
+              {/* Token Info */}
+              <Box bg="degen.secondary" p={6} borderRadius="lg">
+                <Heading size="md" mb={4} color="white">
+                  Token Info
+                </Heading>
+                {totalSupply && (
                   <Text color="whiteAlpha.900">
-                    LP 🔥: {burnLPPercent.toFixed(2)}% | LP 🔒:{" "}
-                    {lockLPPercent.toFixed(2)}% | LP ???: {otherLPPercent.toFixed(2)}%
+                    Total Supply: {totalSupply}
                   </Text>
-                  {liquidityPoolTokenHolders.length > 0 && (
-                    <Box mt={4} bg="whiteAlpha.100" p={4} borderRadius="md">
-                      <Text fontWeight="bold" color="white">LP Holders:</Text>
-                      <UnorderedList color="whiteAlpha.900">
-                        {liquidityPoolTokenHolders.map((holder: any) => (
-                          <ListItem key={holder.address}>
-                            <Text>
-                              {holder.address.slice(0, 6)}...
-                              {holder.address.slice(-4)} | Type: {holder.type} |{" "}
-                              {holder.percentage ?? 0}%
-                              {holder.alias ? ` (${holder.alias})` : ""}
-                            </Text>
-                          </ListItem>
-                        ))}
-                      </UnorderedList>
-                    </Box>
-                  )}
-                </Box>
-              )}
+                )}
+                {numberOfHolders && (
+                  <Text color="whiteAlpha.900">
+                    Number of Holders: {numberOfHolders}
+                  </Text>
+                )}
+              </Box>
 
               {/* Contract Verification */}
               {contractVerified &&
@@ -418,54 +402,76 @@ export default function TokenDetailsPage() {
                     )}
                   </Box>
                 )}
-
-              {/* Token Info */}
-              <Box bg="degen.secondary" p={6} borderRadius="lg">
-                <Heading size="md" mb={4} color="white">
-                  Token Info
-                </Heading>
-                {totalSupply && (
-                  <Text color="whiteAlpha.900">
-                    Total Supply: {totalSupply}
-                  </Text>
-                )}
-                {numberOfHolders && (
-                  <Text color="whiteAlpha.900">
-                    Number of Holders: {numberOfHolders}
-                  </Text>
-                )}
-              </Box>
-
-              {/* Whale Analytics */}
-              {whaleStats && whaleStats.payload && (
-                <Box bg="degen.secondary" p={6} borderRadius="lg">
-                  <Heading size="md" mb={4} color="white">
-                    Whale Analytics
-                  </Heading>
-                  <Text color="whiteAlpha.900">
-                    Top 10 holders control: {whaleStats.payload.top10Percentage ?? "Unknown"}% of supply
-                  </Text>
-                  {whaleStats.payload.whales && (
-                    <Box mt={4} bg="whiteAlpha.100" p={4} borderRadius="md">
-                      <Text fontWeight="bold" color="white">Top Whales:</Text>
-                      <UnorderedList color="whiteAlpha.900">
-                        {whaleStats.payload.whales.slice(0, 5).map((whale: any, index: number) => (
-                          <ListItem key={index}>
-                            <Text>
-                              {whale.address.slice(0, 6)}...{whale.address.slice(-4)} | 
-                              {whale.percentage}% of supply
-                              {whale.alias ? ` (${whale.alias})` : ""}
-                            </Text>
-                          </ListItem>
-                        ))}
-                      </UnorderedList>
-                    </Box>
-                  )}
-                </Box>
-              )}
             </VStack>
           </GridItem>
         </Grid>
+
+        {/* Bottom full-width sections */}
+        <VStack
+          align="stretch"
+          spacing={6}
+        >
+          {/* Pool Health */}
+          {liquidityLocked && (
+            <Box bg="degen.secondary" p={6} borderRadius="lg">
+              <Heading size="md" mb={4} color="white">
+                Pool Health
+              </Heading>
+              {typeof totalPoolValueInETH === "number" && (
+                <Text color="whiteAlpha.900">ETH Value: {totalPoolValueInETH.toFixed(8)}</Text>
+              )}
+              <Text color="whiteAlpha.900">
+                LP 🔥: {burnLPPercent.toFixed(2)}% | LP 🔒:{" "}
+                {lockLPPercent.toFixed(2)}% | LP ???: {otherLPPercent.toFixed(2)}%
+              </Text>
+              {liquidityPoolTokenHolders.length > 0 && (
+                <Box mt={4} bg="whiteAlpha.100" p={4} borderRadius="md">
+                  <Text fontWeight="bold" color="white">LP Holders:</Text>
+                  <UnorderedList color="whiteAlpha.900">
+                    {liquidityPoolTokenHolders.map((holder: any) => (
+                      <ListItem key={holder.address}>
+                        <Text>
+                          {holder.address.slice(0, 6)}...
+                          {holder.address.slice(-4)} | Type: {holder.type} |{" "}
+                          {holder.percentage ?? 0}%
+                          {holder.alias ? ` (${holder.alias})` : ""}
+                        </Text>
+                      </ListItem>
+                    ))}
+                  </UnorderedList>
+                </Box>
+              )}
+            </Box>
+          )}
+
+          {/* Whale Analytics */}
+          {whaleStats && whaleStats.payload && (
+            <Box bg="degen.secondary" p={6} borderRadius="lg">
+              <Heading size="md" mb={4} color="white">
+                Whale Analytics
+              </Heading>
+              <Text color="whiteAlpha.900">
+                Top 10 holders control: {whaleStats.payload.top10Percentage ?? "Unknown"}% of supply
+              </Text>
+              {whaleStats.payload.whales && (
+                <Box mt={4} bg="whiteAlpha.100" p={4} borderRadius="md">
+                  <Text fontWeight="bold" color="white">Top Whales:</Text>
+                  <UnorderedList color="whiteAlpha.900">
+                    {whaleStats.payload.whales.slice(0, 5).map((whale: any, index: number) => (
+                      <ListItem key={index}>
+                        <Text>
+                          {whale.address.slice(0, 6)}...{whale.address.slice(-4)} | 
+                          {whale.percentage}% of supply
+                          {whale.alias ? ` (${whale.alias})` : ""}
+                        </Text>
+                      </ListItem>
+                    ))}
+                  </UnorderedList>
+                </Box>
+              )}
+            </Box>
+          )}
+        </VStack>
       </Container>
     </Box>
   );
