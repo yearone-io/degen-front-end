@@ -13,12 +13,13 @@ import {
   Link as ChakraLink,
   StackDivider,
   Badge,
-  Divider,
   UnorderedList,
   ListItem,
   Container,
+  Icon,
 } from "@chakra-ui/react";
 import Navbar from "@/components/Navbar";
+import { FaEthereum } from "react-icons/fa";
 
 interface EventItem {
   key: string[];
@@ -178,13 +179,14 @@ export default function TokenDetailsPage() {
       <Container maxW="container.xl" py={10}>
         {/* Heading area */}
         <Box bg="degen.secondary" p={6} borderRadius="lg" mb={6}>
-          <Heading size="lg" mb={2} color="white">
-            {tokenName} {tokenSymbol ? `($${tokenSymbol})` : ""} on {chainName}
-          </Heading>
-          <Text fontSize="sm" color="whiteAlpha.700">
-            Address: {addressFromEvent}
-          </Text>
-        </Box>
+        <Heading size="lg" mb={2} color="white" display="flex" alignItems="center">
+          <Icon as={FaEthereum} color="grey" mr={2} boxSize={6} />
+          {tokenName} {tokenSymbol ? `($${tokenSymbol})` : ""}
+        </Heading>
+        <Text fontSize="sm" color="whiteAlpha.700">
+          Address: {addressFromEvent}
+        </Text>
+      </Box>
 
         <VStack
           align="stretch"
@@ -231,7 +233,7 @@ export default function TokenDetailsPage() {
             </Heading>
             <HStack spacing={3} wrap="wrap">
               <Badge colorScheme="red" variant="solid" px={3} py={1}>
-                Risk: {riskLevel}
+                Honeypot Risk: {riskLevel}
               </Badge>
               <Badge colorScheme="green" variant="solid" px={3} py={1}>
                 Buy Tax: {buyTax}%
@@ -375,20 +377,6 @@ export default function TokenDetailsPage() {
               )}
             </Box>
           )}
-
-          {/* Raw Event Data (for debugging or advanced users) */}
-          <Box bg="degen.secondary" p={6} borderRadius="lg">
-            <Heading size="md" mb={4} color="white">
-              Available Events
-            </Heading>
-            <HStack spacing={3} wrap="wrap">
-              {Object.keys(eventsByType).map(eventType => (
-                <Badge key={eventType} colorScheme="purple" variant="outline" px={3} py={1}>
-                  {eventType}
-                </Badge>
-              ))}
-            </HStack>
-          </Box>
         </VStack>
       </Container>
     </Box>

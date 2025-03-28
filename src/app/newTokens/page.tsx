@@ -19,7 +19,7 @@ import useSWR from "swr";
 import axios from "axios";
 import NextLink from "next/link";
 import Navbar from "@/components/Navbar";
-import { FaTwitter, FaTelegram, FaDiscord, FaGlobe } from "react-icons/fa";
+import { FaTwitter, FaTelegram, FaDiscord, FaGlobe, FaEthereum } from "react-icons/fa";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 const FEED_ENDPOINT = "https://degen-dispatch.deno.dev/token/1/recent-detailed";
@@ -95,14 +95,15 @@ export default function NewTokensPage() {
                 _hover={{ textDecoration: "none" }}
                 display="block"
               >
-                <Flex justify="space-between" align="center" mb={3}>
-                  <Heading size="md" color="white">
-                    {token.name}
-                  </Heading>
-                  <Badge colorScheme="orange" px={3} py={1} borderRadius="full" bg="degen.accent">
-                    {token.symbol}
-                  </Badge>
-                </Flex>
+              <Flex justify="space-between" align="center" mb={3}>
+                <Heading size="md" color="white" display="flex" alignItems="center">
+                  <Icon as={FaEthereum} color="grey" mr={2} boxSize={5} />
+                  {token.name}
+                </Heading>
+                <Badge colorScheme="orange" px={3} py={1} borderRadius="full" bg="degen.accent">
+                  {token.symbol}
+                </Badge>
+              </Flex>
                 
                 <HStack spacing={4} mb={3}>
                   <Tooltip label={token.address} hasArrow placement="top">
