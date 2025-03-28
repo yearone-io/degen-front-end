@@ -14,6 +14,7 @@ import {
   Badge,
   Icon,
   Tooltip,
+  Image,
 } from "@chakra-ui/react";
 import useSWR from "swr";
 import axios from "axios";
@@ -96,10 +97,22 @@ export default function NewTokensPage() {
                 display="block"
               >
               <Flex justify="space-between" align="center" mb={3}>
-                <Heading size="md" color="white" display="flex" alignItems="center">
-                  <Icon as={FaEthereum} color="grey" mr={2} boxSize={5} />
-                  {token.name}
-                </Heading>
+                <Flex align="center">
+                  {token.imageUrl && (
+                    <Image
+                      src={token.imageUrl} 
+                      alt={`${token.name} logo`} 
+                      boxSize={10} 
+                      mr={3} 
+                      borderRadius="full"
+                      objectFit="cover"
+                    />
+                  )}
+                  <Heading size="md" color="white" display="flex" alignItems="center">
+                    <Icon as={FaEthereum} color="grey" mr={2} boxSize={5} />
+                    {token.name}
+                  </Heading>
+                </Flex>
                 <Badge colorScheme="orange" px={3} py={1} borderRadius="full" bg="degen.accent">
                   {token.symbol}
                 </Badge>

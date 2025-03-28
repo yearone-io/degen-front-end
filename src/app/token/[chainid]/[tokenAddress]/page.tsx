@@ -17,6 +17,8 @@ import {
   ListItem,
   Container,
   Icon,
+  Flex,
+  Image,
 } from "@chakra-ui/react";
 import Navbar from "@/components/Navbar";
 import { FaEthereum } from "react-icons/fa";
@@ -44,6 +46,12 @@ export default function TokenDetailsPage() {
       revalidateOnFocus: false,
     }
   );
+
+  // Find token image from events
+  const tokenImageUrl = data?.find((evt) => 
+    evt?.value?.type === "VerificationMessageId" && 
+    evt.value.payload?.imageUrl
+  )?.value?.payload?.imageUrl;
 
   // Loading/error states
   if (isLoading) {
@@ -107,10 +115,7 @@ export default function TokenDetailsPage() {
   const tokenSymbol = contractCreated?.payload?.symbol ?? "";
   const addressFromEvent = contractCreated?.address ?? tokenAddress;
 
-  // If HoneypotChecked has chain info
-  const chainName =
-    honeypotChecked?.payload?.honeypotResponse?.chain?.name ?? chainId;
-
+  
   // Dex Screener Chart URL generation
   const getDexScreenerEmbedUrl = () => {
     return `https://dexscreener.com/ethereum/${tokenAddress}?embed=1&loadChartSettings=0&trades=0&tabs=0&info=0&chartLeftToolbar=0&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=5`;
@@ -178,15 +183,30 @@ export default function TokenDetailsPage() {
       
       <Container maxW="container.xl" py={10}>
         {/* Heading area */}
-        <Box bg="degen.secondary" p={6} borderRadius="lg" mb={6}>
-        <Heading size="lg" mb={2} color="white" display="flex" alignItems="center">
-          <Icon as={FaEthereum} color="grey" mr={2} boxSize={6} />
-          {tokenName} {tokenSymbol ? `($${tokenSymbol})` : ""}
-        </Heading>
-        <Text fontSize="sm" color="whiteAlpha.700">
-          Address: {addressFromEvent}
-        </Text>
-      </Box>
+        <Box bg="degen.secondary" p={6} borderRadius="lg" mb={6} display="flex" alignItems="center">
+          <Flex align="center" mr={4}>
+            {tokenImageUrl && (
+              <Image 
+                src={tokenImageUrl} 
+                alt={`${tokenName} logo`} 
+                boxSize={16} 
+                borderRadius="full"
+                objectFit="cover"
+                mr={4}
+              />
+            )}
+            <Box>
+              <Heading size="lg" mb={2} color="white" display="flex" alignItems="center">
+                <Icon as={FaEthereum} color="grey" mr={2} boxSize={6} />
+                {tokenName} {tokenSymbol ? `($${tokenSymbol})` : ""}
+              </Heading>
+              <Text fontSize="sm" color="whiteAlpha.700">
+                Address: {addressFromEvent}
+              </Text>
+            </Box>
+          </Flex>
+        </Box>
+
 
         <VStack
           align="stretch"
